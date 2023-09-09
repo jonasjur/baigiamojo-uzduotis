@@ -3,5 +3,13 @@
 {% block content %}
     <h1>Klausimas</h1>
     <p>{{ klausimas.klausimas }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="atsakymas">Atsakymas:</label>
+        <input type="text" id="atsakymas" name="atsakymas">
+        <button type="submit">Pateigti atsakyma</button>
+    </form>
+
     <a href="{% url 'dashboard' %}">Grįžti atgal į darbalaukį</a>
 {% endblock %}

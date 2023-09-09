@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Sveiki, {{ user.username }}</h1>
-    
+
     <h2>Sukurk nauja klausima:</h2>
     <form method="post" action="{% url 'klausimo_ivedimo' %}">
         {% csrf_token %}
@@ -15,6 +15,15 @@
         {% for klausimas in neatsakyti_klausimai %}
             <li>
                 <a href="{% url 'klausimo_atvaizdavimas' klausimas.id %}">{{ klausimas.klausimas }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Atsakyti klausimai:</h2>
+    <ul>
+        {% for klausimas in atsakyti_klausimai %}
+            <li>
+                {{ klausimas.klausimas }} (Atsakymas: {{ klausimas.atsakymas }})
             </li>
         {% endfor %}
     </ul>
