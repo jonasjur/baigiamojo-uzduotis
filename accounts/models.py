@@ -17,8 +17,9 @@ class NeatsakytasKlausimas(models.Model):
 class AtsakytasKlausimas(models.Model):
     vartotojas = models.ForeignKey(User, on_delete=models.CASCADE)
     klausimas = models.TextField()
-    atsakymas = models.TextField()  # Add a field for answers
+    atsakymas = models.TextField()
     sukurtas = models.DateTimeField(auto_now_add=True)
+    liked_by = models.ManyToManyField(User, related_name='liked_answers', blank=True)
 
     def __str__(self):
         return self.klausimas

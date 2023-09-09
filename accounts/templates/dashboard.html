@@ -27,14 +27,28 @@
                 {{ klausimas.klausimas }}
                 <span class="author"> - {{ klausimas.vartotojas.username }}</span>
                 {% if klausimas.atsakymas %}
-                (Atsakymas: {{ klausimas.atsakymas }})
+                    (Atsakymas: {{ klausimas.atsakymas }})
+
+                    (Likes: {{ klausimas.liked_by.count }})
+
+                    {% if request.user in klausimas.liked_by.all %}
+                        <form method="post" action="{% url 'like_answer' klausimas.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Unlike</button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{% url 'like_answer' klausimas.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Like</button>
+                        </form>
+                    {% endif %}
                 {% else %}
-                <form method="post" action="{% url 'klausimo_atvaizdavimas' klausimas.id %}">
-                    {% csrf_token %}
-                    <label for="atsakymas">Atsakymas:</label>
-                    <input type="text" id="atsakymas" name="atsakymas">
-                    <button type="submit">Pateigti atsakymą</button>
-                </form>
+                    <form method="post" action="{% url 'klausimo_atvaizdavimas' klausimas.id %}">
+                        {% csrf_token %}
+                        <label for="atsakymas">Atsakymas:</label>
+                        <input type="text" id="atsakymas" name="atsakymas">
+                        <button type="submit">Pateigti atsakymą</button>
+                    </form>
                 {% endif %}
             </li>
         {% endfor %}
