@@ -10,5 +10,6 @@ urlpatterns = [
     path('logout/',LogoutView.as_view(next_page='dashboard'),name="logout"),
     path('klausimo_ivedimas/', views.klausimoIvedimoVaizdas, name='klausimo_ivedimo'),
     path('klausimai/<int:klausimo_id>/', views.atvaizduotiKlausima, name='klausimo_atvaizdavimas'),
+    path('like_answer/<int:answer_id>/', views.like_answer, name='like_answer'),
 
 ]

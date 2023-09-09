@@ -77,3 +77,14 @@ def atvaizduotiKlausima(request, klausimo_id):
     return render(request, 'klausimo_atvaizdavimas.html', {'klausimas': klausimas})
 
 
+def like_answer(request, answer_id):
+    answer = AtsakytasKlausimas.objects.get(id=answer_id)
+    already_liked = answer.liked_by.filter(id=request.user.id).exists()
+
+    if already_liked:
+        answer.liked_by.remove(request.user)
+    else:
+        answer.liked_by.add(request.user)
+
+    return redirect('dashboard')
+
