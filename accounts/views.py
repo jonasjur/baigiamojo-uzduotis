@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from accounts.models import KlausimoForma, NeatsakytasKlausimas, AtsakytasKlausimas
+from accounts.models import  NeatsakytasKlausimas, AtsakytasKlausimas
+from .forms import KlausimoForma
 
 
 def indexView(request):
@@ -11,9 +12,8 @@ def indexView(request):
 
 @login_required
 def dashboardView(request):
-    neatsakyti_klausimai = NeatsakytasKlausimas.objects.filter(vartotojas=request.user)
-    atsakyti_klausimai = AtsakytasKlausimas.objects.filter(vartotojas=request.user)
-    forma = KlausimoForma()
+    neatsakyti_klausimai = NeatsakytasKlausimas.objects.all()
+    atsakyti_klausimai = AtsakytasKlausimas.objects.all()
 
     if request.method == "POST":
         forma = KlausimoForma(request.POST)
@@ -23,9 +23,10 @@ def dashboardView(request):
             klausimas.save()
             return redirect('dashboard')
 
-    return render(request, 'dashboard.html',
-                  {'neatsakyti_klausimai': neatsakyti_klausimai, 'atsakyti_klausimai': atsakyti_klausimai,
-                   'forma': forma})
+    else:
+        forma = KlausimoForma()
+
+    return render(request, 'dashboard.html', {'neatsakyti_klausimai': neatsakyti_klausimai, 'atsakyti_klausimai': atsakyti_klausimai, 'forma': forma})
 
 
 @login_required
