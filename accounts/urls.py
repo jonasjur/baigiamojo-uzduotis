@@ -8,5 +8,7 @@ urlpatterns = [
     path('login/',LoginView.as_view(),name="login_url"),
     path('register/',views.registerView,name="register_url"),
     path('logout/',LogoutView.as_view(next_page='dashboard'),name="logout"),
+    path('klausimo_ivedimas/', views.klausimoIvedimoVaizdas, name='klausimo_ivedimo'),
+    path('klausimai/<int:klausimo_id>/', views.atvaizduotiKlausima, name='klausimo_atvaizdavimas'),
 
 ]

@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Paprastas</title>
+    <title>Pradzia</title>
 </head>
 <body>
     {% block content %}
-        <h1>Pagrindinis puslapis</h1>
+        <h1>Titulinis puslapis</h1>
         {% if user.is_authenticated %}
             <a href="{% url 'logout' %}">Logout</a>
             {% else %}

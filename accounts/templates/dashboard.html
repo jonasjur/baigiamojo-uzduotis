@@ -1,5 +1,23 @@
 {% extends 'index.html' %}
 
 {% block content %}
-        <h1>Sveiki, {{user.username}}</h1>
+    <h1>Sveiki, {{ user.username }}</h1>
+    
+    <h2>Sukurk nauja klausima:</h2>
+    <form method="post" action="{% url 'klausimo_ivedimo' %}">
+        {% csrf_token %}
+        {{ forma.as_p }} {# Display the form fields #}
+        <button type="submit">Pateigti</button>
+    </form>
+
+    <h2>Neatsakyti klausimai:</h2>
+    <ul>
+        {% for klausimas in neatsakyti_klausimai %}
+            <li>
+                <a href="{% url 'klausimo_atvaizdavimas' klausimas.id %}">{{ klausimas.klausimas }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'logout' %}">Atsijungti</a>
 {% endblock %}

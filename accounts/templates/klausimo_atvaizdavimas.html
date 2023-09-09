@@ -1,0 +1,7 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <h1>Klausimas</h1>
+    <p>{{ klausimas.klausimas }}</p>
+    <a href="{% url 'dashboard' %}">Grįžti atgal į darbalaukį</a>
+{% endblock %}
