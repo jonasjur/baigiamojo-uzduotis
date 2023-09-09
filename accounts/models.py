@@ -17,7 +17,7 @@ class NeatsakytasKlausimas(models.Model):
 class AtsakytasKlausimas(models.Model):
     vartotojas = models.ForeignKey(User, on_delete=models.CASCADE)
     klausimas = models.TextField()
-    atsakymas = models.TextField()
+    atsakymas = models.TextField()  # Add a field for answers
     sukurtas = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

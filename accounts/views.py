@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
+from accounts.forms import KlausimoForma
 from accounts.models import  NeatsakytasKlausimas, AtsakytasKlausimas
-from .forms import KlausimoForma
 
 
 def indexView(request):

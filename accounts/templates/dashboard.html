@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Sveiki, {{ user.username }}</h1>
 
-    <h2>Sukurk nauja klausima:</h2>
+    <h2>Sukurk naują klausimą:</h2>
     <form method="post" action="{% url 'klausimo_ivedimo' %}">
         {% csrf_token %}
         {{ forma.as_p }} {# Display the form fields #}
@@ -15,6 +15,7 @@
         {% for klausimas in neatsakyti_klausimai %}
             <li>
                 <a href="{% url 'klausimo_atvaizdavimas' klausimas.id %}">{{ klausimas.klausimas }}</a>
+                <span class="author"> - {{ klausimas.vartotojas.username }}</span>
             </li>
         {% endfor %}
     </ul>
@@ -23,7 +24,18 @@
     <ul>
         {% for klausimas in atsakyti_klausimai %}
             <li>
-                {{ klausimas.klausimas }} (Atsakymas: {{ klausimas.atsakymas }})
+                {{ klausimas.klausimas }}
+                <span class="author"> - {{ klausimas.vartotojas.username }}</span>
+                {% if klausimas.atsakymas %}
+                (Atsakymas: {{ klausimas.atsakymas }})
+                {% else %}
+                <form method="post" action="{% url 'klausimo_atvaizdavimas' klausimas.id %}">
+                    {% csrf_token %}
+                    <label for="atsakymas">Atsakymas:</label>
+                    <input type="text" id="atsakymas" name="atsakymas">
+                    <button type="submit">Pateigti atsakymą</button>
+                </form>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
