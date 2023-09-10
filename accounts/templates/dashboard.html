@@ -40,7 +40,7 @@
         {% for klausimas in atsakyti_klausimai %}
             <!-- Ciklas per atsakytiems klausimams sąrašą -->
             <li>
-                {{ klausimas.klausimas }}
+                (Klausimas: {{klausimas.klausimas }})
                 <!-- Rodo klausimo tekstą -->
                 <span class="author"> - Klausimą sukūrė: {{ klausimas.vartotojas.username }}</span>
                 <!-- Rodo klausimo autoriaus vardą -->
