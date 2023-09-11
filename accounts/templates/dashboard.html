@@ -1,40 +1,81 @@
 {% extends 'index.html' %}
-
 {% block content %}
-    <h1>Sveiki, {{ user.username }}</h1>
 
-    <h2>Sukurk naują klausimą:</h2>
+    <h1>Sveiki, {{ user.username }}</h1>
+    <!-- Rodo pasveikinimo žinutę su prisijungusio vartotojo vardu -->
+
+    <h2>Sukurkite naują klausimą:</h2>
+    <!-- Antraštė naujo klausimo formai sukurti -->
+
     <form method="post" action="{% url 'klausimo_ivedimo' %}">
+
         {% csrf_token %}
-        {{ forma.as_p }} {# Display the form fields #}
-        <button type="submit">Pateigti</button>
+        {{ forma.as_p }}
+        <!-- Atvaizduoja visus formos laukus ir etiketes -->
+        <button type="submit">Pateikti</button>
+        <!-- Mygtukas naujo klausimo sukūrimui -->
     </form>
 
     <h2>Neatsakyti klausimai:</h2>
+    <!-- Antraštė neatsakytų klausimų sąrašui -->
+
     <ul>
+        <!-- Pradedame neatsakytų klausimų sąrašo žymėjimą -->
         {% for klausimas in neatsakyti_klausimai %}
+            <!-- Ciklas per neatsakytų klausimų sąrašą -->
             <li>
                 <a href="{% url 'klausimo_atvaizdavimas' klausimas.id %}">{{ klausimas.klausimas }}</a>
+                <!-- Rodo nuorodą į klausimo peržiūros puslapį -->
                 <span class="author"> - {{ klausimas.vartotojas.username }}</span>
+                <!-- Rodo klausimo autoriaus vardą -->
             </li>
         {% endfor %}
     </ul>
 
     <h2>Atsakyti klausimai:</h2>
+    <!-- Antraštė atsakytiems klausimams sąrašui -->
+
     <ul>
+        <!-- Pradedame atsakytiems klausimams sąrašo žymėjimą -->
         {% for klausimas in atsakyti_klausimai %}
+            <!-- Ciklas per atsakytiems klausimams sąrašą -->
             <li>
-                {{ klausimas.klausimas }}
-                <span class="author"> - {{ klausimas.vartotojas.username }}</span>
+                (Klausimas: {{klausimas.klausimas }})
+                <!-- Rodo klausimo tekstą -->
+                <span class="author"> - Klausimą sukūrė: {{ klausimas.vartotojas.username }}</span>
+                <!-- Rodo klausimo autoriaus vardą -->
+
                 {% if klausimas.atsakymas %}
-                (Atsakymas: {{ klausimas.atsakymas }})
+                    <!-- Tikrina, ar yra atsakymas į klausimą -->
+                    (Atsakymas: {{ klausimas.atsakymas }})
+                    <!-- Rodo atsakymo tekstą -->
+                    <span class="answer-author"> - Atsakymą parašė: {{ klausimas.atsakymo_vartotojas.username }}</span>
+                    <!-- Rodo atsakymo autoriaus vardą -->
+                    (Patinka: {{ klausimas.liked_by.count }})
+                    <!-- Rodo patinkančių skaičių atsakymui -->
+
+                    {% if request.user in klausimas.liked_by.all %}
+                        <!-- Tikrina, ar dabartinis vartotojas patiko atsakymą -->
+                        <form method="post" action="{% url 'like_answer' klausimas.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Nepatinka</button>
+                            <!-- Mygtukas atšaukti patikimą atsakymą -->
+                        </form>
+                    {% else %}
+                        <form method="post" action="{% url 'like_answer' klausimas.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Patinka</button>
+                            <!-- Mygtukas patikti atsakymą -->
+                        </form>
+                    {% endif %}
                 {% else %}
-                <form method="post" action="{% url 'klausimo_atvaizdavimas' klausimas.id %}">
-                    {% csrf_token %}
-                    <label for="atsakymas">Atsakymas:</label>
-                    <input type="text" id="atsakymas" name="atsakymas">
-                    <button type="submit">Pateigti atsakymą</button>
-                </form>
+                    <form method="post" action="{% url 'klausimo_atvaizdavimas' klausimas.id %}">
+                        {% csrf_token %}
+                        <label for="atsakymas">Atsakymas:</label>
+                        <input type="text" id="atsakymas" name="atsakymas">
+                        <button type="submit">Pateikti atsakymą</button>
+                        <!-- Mygtukas pateikti atsakymą -->
+                    </form>
                 {% endif %}
             </li>
         {% endfor %}
